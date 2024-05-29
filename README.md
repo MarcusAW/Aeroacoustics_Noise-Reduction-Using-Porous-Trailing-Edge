@@ -1,1 +1,1 @@
-# noise-reduction-using-porous-trailing-edge
+# Noise-Reduction-Using-Porous-Trailing-Edge
