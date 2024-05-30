@@ -20,8 +20,8 @@ solvers
     p
     {
         solver           GAMG;
-        tolerance        1e-8;
-        relTol           0; //switch to 0 for LES after certain time
+        tolerance        1e-4;
+        relTol           0.01; //switch to 0 for LES after certain time
         smoother         GaussSeidel;
         nPreSweeps       0;
         nPostSweeps      2;
@@ -29,13 +29,13 @@ solvers
         agglomerator     faceAreaPair;
         nCellsInCoarsestLevel 100;
         mergeLevels      1;
-	    minIter		     3;
+	    minIter		 2;
     }
 
     pFinal
     {
 	    $p;
-        tolerance        1e-6;
+        tolerance        1e-6;//switch to 1e-8 for LES after certain time
 	    relTol		 0;
 	    minIter		 1;
     }
@@ -44,7 +44,7 @@ solvers
     {
         solver          PBiCGStab;
         preconditioner  DILU;
-        tolerance       1e-08;
+        tolerance       1e-06;//switch to 1e-8 for LES after certain time
         relTol          0.0;
     }
 
@@ -52,25 +52,30 @@ solvers
     {
         solver          PBiCGStab;
         preconditioner  DILU;
-        tolerance       1e-08;
+        tolerance       1e-08;//switch to 1e-8 for LES after certain time
         relTol          0;
-	    minIter		1;
+	minIter		1;
     }
-    
     k
+    
     {
         solver          PBiCGStab;
         preconditioner  DILU;
-	    tolerance       1e-08;
-        relTol          0.0001; //0 after awhile
+	    tolerance       1e-07;
+        relTol          0;
+        //relTol          0;
     }
 
     omega
     {
+        //solver          smoothSolver;
+        //smoother 	  GaussSeidel;
+     
 	    solver          PBiCGStab;
         preconditioner  DILU;
 	    tolerance       1e-08;
-        relTol          0.0001; //0 after awhile
+        relTol          0.001;
+        //relTol          0;
     }
 }
 
@@ -79,7 +84,7 @@ PIMPLE
 {
     momentumPredictor yes;
     nOuterCorrectors 1;
-    nCorrectors     3;
+    nCorrectors     4; //switch to 3 for LES after certain time
     nNonOrthogonalCorrectors 1;
     transonic       no;
     consistent      no;
@@ -92,6 +97,4 @@ relaxationFactors
     p               1;
     ".*Final"        1.0;
 }
-
-
 // ************************************************************************* //

@@ -26,24 +26,20 @@ boundaryField
         type            nutUSpaldingWallFunction;
         value           $internalField;
     }
-
     inlet
     {
         type            calculated;
         value           $internalField;
     }
-
     outlet
     {
         type            calculated;
         value           $internalField;
     }
-    
     "(top|bottom)"
     {
         type            zeroGradient;
     }
-    
     frontCyc
     {
         type            cyclicAMI;

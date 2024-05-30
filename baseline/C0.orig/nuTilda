@@ -26,25 +26,21 @@ boundaryField
         type            zeroGradient;
         value           $internalField;
     }
-
     inlet
     {
         type            fixedValue;
         value           $internalField;
     }
-
     outlet
     {
         type            inletOutlet;
         inletValue      $internalField;
         value           $internalField;
     }
-
     "(top|bottom)"
     {
         type            zeroGradient;
     }
-
     frontCyc
     {
         type            cyclicAMI;

@@ -23,15 +23,15 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         1.6;
+endTime         2.73;
 
 deltaT          2e-6;
 
 writeControl    adjustable;
 
-writeInterval   0.01; 
+writeInterval   0.0005; //0.0005
 
-purgeWrite      100;
+purgeWrite      500;
 
 writeFormat     ascii;
 
@@ -47,15 +47,12 @@ runTimeModifiable yes;
 
 adjustTimeStep yes;
 
-maxCo   1;
+maxCo   0.5;
 
 maxDeltaT 8e-6;
 
 functions
 {
-    #include "CurleControl"
-    #include "fwhControl"
-    #include "OFCurle" //OpenFOAM Curle analogy
     Co1
     {
         type            CourantNo;
@@ -64,7 +61,6 @@ functions
         writeControl    writeTime;
         timeInterval        0.05;
     }
-
     solverInfo
     {
         type            solverInfo;
@@ -75,12 +71,22 @@ functions
         writeControl    writeTime;
         timeInterval        0.05;
     }
+    yPlus
+    {
+        type yPlus;
+        libs (fieldFunctionObjects);
+        patches (airfoil);
+        writeControl writeTime;
+        timeInterval        0.05;
+        timeStart 0;
+        executeControl timeStep;
+    }
     forces
     {
         type            forces;
         libs            (forces);
         writeControl    writeTime;
-        timeInterval        0.05;
+        timeInterval        0.001;
         timeStart       0;
         patches         (airfoil);
         CofR            (0 0 0);
@@ -93,7 +99,7 @@ functions
         type                forceCoeffs;
         libs                ( "libforces.so" );
         writeControl        writeTime;
-        timeInterval        0.05;
+        timeInterval        0.001;
         patches             ("airfoil");
         rho                 rhoInf;
         log                 true;
@@ -106,16 +112,6 @@ functions
         lRef                31.15e-3;
         Aref                1.953105e-4;
     }
-    yPlus
-    {
-        type yPlus;
-        libs (fieldFunctionObjects);
-        patches (airfoil);
-        writeControl writeTime;
-        timeInterval        0.05;
-        timeStart 0;
-        executeControl timeStep;
-    }
     turbulenceFields
     {
         type        turbulenceFields;
@@ -127,15 +123,15 @@ functions
         executeControl          timeStep;
         executeInterval         1;
     }
-    
     fieldAverage
     {
         type            fieldAverage;
         libs     ("libfieldFunctionObjects.so");
         enabled         true;
         writeControl   writeTime;
-        timeInterval        0.05;
-    	timeStart       0.5;
+        timeInterval        0.001;
+    	timeStart       2.53;
+    	restartOnRestart    false;
         fields
         (
             U
@@ -147,7 +143,7 @@ functions
             p
             {
                 mean        on;
-                prime2Mean  off;
+                prime2Mean  on;
                 base        time;
             }
             turbulenceProperties:k
@@ -157,6 +153,25 @@ functions
                 base        time;
             }
         );
+    }
+    vorticity1
+    {
+        type        vorticity;
+        libs        (fieldFunctionObjects);
+        writeControl writeTime;
+        timeInterval        0.001;
+        timeStart       2.2;
+        executeControl timeStep;
+    }
+    wallShearStress1
+    {
+        type            wallShearStress;
+        libs            (fieldFunctionObjects);
+        patches         (airfoil); 
+        writeControl writeTime;
+        timeInterval        0.001;
+        timeStart       2.2;
+        executeControl timeStep;
     }
 }
 

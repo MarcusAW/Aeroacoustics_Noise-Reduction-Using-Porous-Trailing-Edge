@@ -25,25 +25,21 @@ boundaryField
         type            fixedValue;
         value           uniform (0 0 0);
     }
-
     inlet
     {
         type            fixedValue;
         value           uniform (7.56 0 0);
     }
-
     outlet
     {
         type            inletOutlet;
         value           uniform (0 0 0);
         inletValue      uniform (0 0 0);
     }
-
     "(top|bottom)"
     {
         type            slip;
     }
-
     frontCyc
     {
         type            cyclicAMI;
