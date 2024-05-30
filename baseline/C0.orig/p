@@ -24,27 +24,23 @@ boundaryField
     {
         type            zeroGradient;
     }
-
     inlet
     {
         type            zeroGradient;
     }
-
     outlet
     {
-        type            fixedValue; // totalPressure;
+        type            fixedValue; 
         rho             none;
         psi             none;
         p0              $internalField;
         gamma           1;
         value           $internalField;
     }
-
     "(top|bottom)"
     {
         type            zeroGradient;
     }
-
     frontCyc
     {
         type            cyclicAMI;
