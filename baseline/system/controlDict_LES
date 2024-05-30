@@ -53,6 +53,34 @@ maxDeltaT 8e-6;
 
 functions
 {
+    Co1
+    {
+        type            CourantNo;
+        libs            (fieldFunctionObjects);
+        timeInterval        1;
+        writeControl    writeTime;
+        timeInterval        0.05;
+    }
+    solverInfo
+    {
+        type            solverInfo;
+        libs            ("libutilityFunctionObjects.so");
+        fields          (U p);
+        timeInterval        1;
+        writeResidualFields yes;
+        writeControl    writeTime;
+        timeInterval        0.05;
+    }
+    yPlus
+    {
+        type yPlus;
+        libs (fieldFunctionObjects);
+        patches (airfoil);
+        writeControl writeTime;
+        timeInterval        0.05;
+        timeStart 0;
+        executeControl timeStep;
+    }
     forces
     {
         type            forces;
