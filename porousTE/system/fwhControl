@@ -1,0 +1,25 @@
+Farassat1A-triSurface
+{
+        type            FfowcsWilliamsHawkings;
+        formulationType GTFormulation;
+        #include        "commonSettings";
+        patches ();
+        interpolationScheme cellPointFace;
+        surfaces
+        (
+                cylinder
+                {
+                     type               sampledTriSurfaceMesh;
+                     surface            cylinderSurface.stl; //stl on cylinder patch
+                     source             cells;
+                     interpolate        false;
+                }
+        );
+        
+        cleanFreq       100;
+        fixedResponseDelay false;
+        responseDelay   7.3e-4;
+        nonUniformSurfaceMotion false;
+        Ufwh    (.0 .0 .0);
+        U0      (.0 .0 .0);
+}

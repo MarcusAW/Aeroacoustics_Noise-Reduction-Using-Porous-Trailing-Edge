@@ -1,0 +1,35 @@
+curlePoint
+{
+    // Mandatory entries
+    type            Curle;
+    libs            (fieldFunctionObjects);
+    patches         (airfoil);
+    c0              343;
+    input           point;
+    output          point;
+    observerPositions
+    (
+        (4.330127e-01 2.500000e-01 0) //30 
+        (2.500000e-01 4.330127e-01 0) //60 
+        (0 5.000000e-01 0) //90 
+        (-2.500000e-01 4.330127e-01 0) //120 
+        (-4.330127e-01 2.500000e-01 0) //150 
+        (-5.000000e-01 0 0) //180 
+        (-4.330127e-01 -2.500000e-01 0) //210 
+        (-2.500000e-01 -4.330127e-01 0) //240 
+        (0 -5.000000e-01 0) //270 
+        (2.500000e-01 -4.330127e-01 0) //300 
+        (4.330127e-01 -2.500000e-01 0) //330 
+        (5.000000e-01 0 0) //360 
+    );
+    
+    // Optional (inherited) entries
+    p               p;
+    region          region0;
+    enabled         true;
+    log             true;
+    timeStart       2.4;
+    timeEnd         2.6;
+    executeControl  timeStep;
+    executeInterval 1;
+}
