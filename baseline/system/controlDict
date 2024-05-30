@@ -1,0 +1,151 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2012                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     pimpleFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         2.73;
+
+deltaT          2e-6;
+
+writeControl    adjustable;
+
+writeInterval   0.0005; //0.0005
+
+purgeWrite      500;
+
+writeFormat     ascii;
+
+writePrecision  8;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   8;
+
+runTimeModifiable yes;
+
+adjustTimeStep yes;
+
+maxCo   0.5;
+
+maxDeltaT 8e-6;
+
+functions
+{
+    forces
+    {
+        type            forces;
+        libs            (forces);
+        writeControl    writeTime;
+        timeInterval        0.001;
+        timeStart       0;
+        patches         (airfoil);
+        CofR            (0 0 0);
+        writeFields     yes;
+        rho             rhoInf;
+        rhoInf          1.1845;
+    }
+    forceCoeffs
+    {
+        type                forceCoeffs;
+        libs                ( "libforces.so" );
+        writeControl        writeTime;
+        timeInterval        0.001;
+        patches             ("airfoil");
+        rho                 rhoInf;
+        log                 true;
+        liftDir             (0 1 0);
+        dragDir             (1 0 0);
+        CofR                (0 0 0);
+        pitchAxis           (0 0 1);
+        magUInf             7.56;
+        rhoInf              1.1845;
+        lRef                31.15e-3;
+        Aref                1.953105e-4;
+    }
+    turbulenceFields
+    {
+        type        turbulenceFields;
+        libs        ("libfieldFunctionObjects.so");
+        fields                  (k); 
+        enabled                 true;
+        writeControl            writeTime;
+        timeInterval            0.05;
+        executeControl          timeStep;
+        executeInterval         1;
+    }
+    fieldAverage
+    {
+        type            fieldAverage;
+        libs     ("libfieldFunctionObjects.so");
+        enabled         true;
+        writeControl   writeTime;
+        timeInterval        0.001;
+    	timeStart       2.53;
+    	restartOnRestart    false;
+        fields
+        (
+            U
+            {
+                mean        on;
+                prime2Mean  on;
+                base        time;
+            }
+            p
+            {
+                mean        on;
+                prime2Mean  on;
+                base        time;
+            }
+            turbulenceProperties:k
+            {
+                mean        on;
+                prime2Mean  off;
+                base        time;
+            }
+        );
+    }
+    vorticity1
+    {
+        type        vorticity;
+        libs        (fieldFunctionObjects);
+        writeControl writeTime;
+        timeInterval        0.001;
+        timeStart       2.2;
+        executeControl timeStep;
+    }
+    wallShearStress1
+    {
+        type            wallShearStress;
+        libs            (fieldFunctionObjects);
+        patches         (airfoil); 
+        writeControl writeTime;
+        timeInterval        0.001;
+        timeStart       2.2;
+        executeControl timeStep;
+    }
+}
+
+
+// ************************************************************************* //
